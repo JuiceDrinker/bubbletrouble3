@@ -99,7 +99,7 @@ Bubbles.prototype.checkCollision();
 
 ```
 
-## States y States Transitions
+## States and States Transitions
 
 ```
 - splashScreen()
