@@ -1,7 +1,13 @@
-'use strict'
+"use strict";
 
 function Game() {
-  let gameRunning = false;
+  this.canvas = null;
+  this.ctx = null;
+  this.bubbles = [];
+  this.player = null;
+  this.gameRunning = false;
+  this.gameScreen = null;
+  this.score = 0;
   //Players
   //Bubbels
   //Bullets
@@ -13,28 +19,38 @@ function Game() {
   // restartGame();
 }
 
-Game.prototype.startLoop(){
-  var loop = function(){
-    console.log('IN LOOP YO');
-  }
 
-  if (gameRunning) requestAnimationFrame(loop).bind(this);
+Game.prototype.start = function(){
+  this.gameRunning = !this.gameRunning
+  this.startLoop();
 }
 
-Game.prototype.checkCollision(){}
+Game.prototype.startLoop = function() {
+  var loop = function() {
+    if (this.gameRunning){
+      console.log("game running");
+      requestAnimationFrame(loop);
+    } 
+  }.bind(this);
 
-Game.prototype.updateLevel(){}
+  requestAnimationFrame(loop)
+  // window.requestAnimationFrame(this.startLoop);
+};
 
-Game.prototype.clearCanvas(){}
+Game.prototype.checkCollision = function() {};
 
-Game.prototype.updateStatus(){}
+Game.prototype.updateLevel = function() {};
 
-Game.prototype.updateCanvas(){}
+Game.prototype.clearCanvas = function() {};
 
-Game.prototype.draw(){}
+Game.prototype.updateStatus = function() {};
 
-Game.prototype.goToGameOver(){}
+Game.prototype.updateCanvas = function() {};
 
-Game.prototype.removePlayerLife();
+Game.prototype.draw = function() {};
 
-Game.prototype.handleBubblePop();
+Game.prototype.goToGameOver = function() {};
+
+Game.prototype.removePlayerLife = function() {};
+
+Game.prototype.handleBubblePop = function() {};

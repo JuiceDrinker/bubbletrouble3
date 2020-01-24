@@ -1,14 +1,14 @@
 function Player() {
-    //Lives
-    this.lives;
-    //Bullets
-    //shoot();
-    // move();
-    // screenCollision();
+  //Lives
+  this.lives;
+  //Bullets
+  //shoot();
+  // move();
+  // screenCollision();
 }
 
-Player.prototype.move(){}
+Player.prototype.move = function() {};
 
-Player.prototype.shoot(){}
+Player.prototype.shoot = function() {};
 
-Player.prototype.screenCollision();
+Player.prototype.screenCollision = function() {};
