@@ -1,4 +1,7 @@
+'use strict'
+
 function Game() {
+  let gameRunning = false;
   //Players
   //Bubbels
   //Bullets
@@ -10,7 +13,13 @@ function Game() {
   // restartGame();
 }
 
-Game.prototype.startLoop(){}
+Game.prototype.startLoop(){
+  var loop = function(){
+    console.log('IN LOOP YO');
+  }
+
+  if (gameRunning) requestAnimationFrame(loop).bind(this);
+}
 
 Game.prototype.checkCollision(){}
 

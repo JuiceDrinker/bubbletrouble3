@@ -26,6 +26,29 @@ _CANVAS_, 1 level, proper screen collisions and collision detection. Splash scre
    function buildSplashScreen(){};
     function buildGameScreen(){};
     function buildEndgameScreen(){};
+    function restartGame(){};
+
+```
+
+### players.js
+
+```
+  function Player() {
+    //Lives
+    this.lives;
+    //Bullets
+    //shoot();
+    // move();
+    // screenCollision();
+}
+
+Player.prototype.draw(){}
+
+Player.prototype.move(){}
+
+Player.prototype.shoot(){}
+
+Player.prototype.screenCollision();
 ```
 
 ### game.js
@@ -40,7 +63,6 @@ function Game() {
   //detectCollision();
   // updateScore();
   //updateState(); Bubbles, players, bullets, etc etc etc
-  // restartGame();
 }
 
 Game.prototype.startLoop(){}
@@ -56,7 +78,6 @@ Game.prototype.updateGame(){}
 
 Game.prototype.updateCanvas(){}
 
-Game.prototype.draw(){}
 
 Game.prototype.goToGameOver(){}
 
@@ -79,6 +100,8 @@ function Bullets() {
   //special effects (?)
 }
 
+Bullets.prototype.draw()
+
 
 ```
 
@@ -93,8 +116,10 @@ function Bubbles {
     // movement()
 }
 
-Bubbles.prototype.changeDirection();
 
+Bubbles.prototype.move();
+Bubbles.prototype.changeDirection();
+Bubbles.prototype.draw();
 Bubbles.prototype.checkCollision();
 
 ```
