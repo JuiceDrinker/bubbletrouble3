@@ -21,26 +21,23 @@ Game.prototype.start = function() {
   this.ctx = this.canvas.getContext("2d");
 
   //Get dimensins of container with margins/paddings included.
-  this.containerHeight = this.canvasContainer.offsetHeight; 
+  this.containerHeight = this.canvasContainer.offsetHeight;
   this.containerWidth = this.canvasContainer.offsetWidth;
   //Canvas to take up all of the parents width.
-  this.canvas.setAttribute('width', this.containerWidth);
-  this.canvas.setAttribute('height', this.containerHeight);
+  this.canvas.setAttribute("width", this.containerWidth);
+  this.canvas.setAttribute("height", this.containerHeight);
 
   this.gameRunning = !this.gameRunning;
 
   //Create new player
   this.player = new Player(this.canvas);
   //Draw bubbles
-  this.bubble = new Bubbles(this.canvas);
+  this.bubble = new Bubbles(this.canvas,300,400);
 
   //Add event listener for right/left keys
-  document.body.addEventListener('keydown', this.player.move)
+  document.body.addEventListener("keydown", this.player.move);
   //Start game loop
-  this.player.draw()
-  this.bubble.draw();
-
-
+  //this.loadLevel();
   this.startLoop();
 };
 
@@ -60,11 +57,16 @@ Game.prototype.checkCollision = function() {};
 
 Game.prototype.updateLevel = function() {};
 
-Game.prototype.clearCanvas = function() {};
+Game.prototype.clearCanvas = function() {
+  this.ctx.fillStyle = "white";
+  this.ctx.fillRect(0, 0, this.containerWidth, this.containerHeight);
+};
 
 Game.prototype.updateStatus = function() {
-  this.bubble.update()
+  this.clearCanvas();
+  this.bubble.update();
   this.bubble.draw();
+  this.player.draw();
 };
 
 Game.prototype.updateCanvas = function() {}; // IDK WHY THIS IS HERE?
@@ -83,8 +85,8 @@ Game.prototype.removeGameScreen = function() {};
 
 Game.prototype.restartGame = function() {};
 
-Game.prototype.loadLevel = function(){
-  bubble = new Bubbles;
-  this.bubbles.push(bubble)
-
-}
+//Backlog
+// Game.prototype.loadLevel = function() {
+//   let bubble = new Bubbles(this.canvas,300,200);
+//   this.bubbles.push(bubble);
+// };

@@ -1,4 +1,4 @@
-function Bubbles(canvas) {
+function Bubbles(canvas,x,y) {
   //Not sure if we need to put canvas here
   this.canvasContainer = document.querySelector(".canvas-container");
   this.canvas = this.canvasContainer.querySelector("canvas");
@@ -12,26 +12,41 @@ function Bubbles(canvas) {
   this.vx = 10;
   this.vy = 10;
   // (x,y)
-  this.x = 300;
-  this.y = 200;
+  this.x = x;
+  this.y = y;
   // change speed of bubbles with this constant;
-  this.t = 0.3;
+  this.t = 0.5;
   // screenCollision()
   // movement()
 }
 
-Bubbles.prototype.changeDirection = function() {};
+Bubbles.prototype.checkWall = function() {
+  if (this.x + this.size > this.containerWidth || this.x < this.size) {
+    this.vx *= -1;
+  }
+};
 
 Bubbles.prototype.checkBounce = function() {
-  if (this.y > this.containerHeight) {
-    this.vy *= -1;
+  if (this.y >= this.containerHeight - this.size / 2 - 30 && this.vy > 0) {
+    if (this.vy < 50) {
+      this.vy *= -1;
+      this.vx *= 0.5 + Math.random();
+    } else {
+      this.vy *= -0.9;
+      if(Math.abs(this.vx) < 200){
+        let randomNumber = Math.random()
+        if(randomNumber < 0.6)
+        this.vx *= 0.7 + randomNumber;
+      }else this.vx *= 0.3 + randomNumber;
+    }
   }
 };
 
 Bubbles.prototype.move = function() {
   this.x += this.vx * this.t;
   this.y += this.vy * this.t;
-  this.vy += 0.9;
+  this.vy += 1;
+  this.checkWall();
   this.checkBounce();
 };
 
