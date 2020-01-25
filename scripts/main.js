@@ -1,56 +1,63 @@
 "use strict";
 
 function main() {
-    var game;
-  //Loading Screen
-  function buildLoadingScreen() {}
+  var game; //Game instance
+  var splashScreen; // Splash screen
+  var gameOverScreen; //Game Over screen
+
+// BACKLOG Loading Screen 
+
+//   function buildLoadingScreen() {} 
+
 
   //Splash
   function buildSplashScreen() {
-    // <button id="multi">2 player</button>
-    // <button id ="controls">Controls</button>
-    // <button id = "exit">Exit Game</button>
-    // let multiPlayer = document.querySelector("button #multi");
-    // let editControls = document.querySelector("button #controls");
-    // let exitGame = document.querySelector("button #exit");
-    //multiPlayer.addEventListener('click',gameStart())
-    // editControls.addEventListener("click", showControls);
-
-    let htmlString = ` <main>
-            <h1>Bubble Trouble 3</h1>
-            <button id="single">1 player</button>
-        </main>`;
-
-    let splashScreen = buildDom(htmlString);
+    splashScreen = buildDom(
+      ` <main>
+        <h1>Bubble Trouble 3</h1>
+        <button id="single">1 player</button>
+    </main>`
+    );
     document.body.appendChild(splashScreen);
     let singlePlayer = document.querySelector("#single");
     singlePlayer.addEventListener("click", startGame);
   }
 
-  function removeSplashScreen(){
-      document.body.innerHTML = "";
-  } 
+  function removeSplashScreen() {
+    splashScreen.remove();
+  }
 
   //Game
   function buildGameScreen() {
+     let gameScreen = buildDom(`
+      <main class="game">
+      <span>Score: </span><span id="score">0</span>
+      <section class="canvas-container">
+        <canvas></canvas>
+      </section>
+    </main>`)
 
+    document.body.appendChild(gameScreen)
+    return gameScreen;
   }
 
-  function removeGameScreen(){}
+  function removeGameScreen() {
+      game.removeGameScreen()
+  }
 
   //Endgame
   function buildEndgameScreen() {}
-  function removeEndgameScreen(){}
+  function removeEndgameScreen() {}
 
   //Setting game states
-  function startGame(){
-      removeSplashScreen();
-      game = new Game();
-      game.gameScreen = buildGameScreen();
-      game.start()
+  function startGame() {
+    removeSplashScreen();
+    game = new Game();
+    game.gameScreen = buildGameScreen();
+    game.start();
   }
 
-  function endGame(){}
+  function endGame() {}
 
   buildSplashScreen();
 }
