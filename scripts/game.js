@@ -12,6 +12,7 @@ function Game() {
   this.gameRunning = false;
   this.gameScreen = null;
   this.score = 0;
+  this.levelTimeOut = false;
   // BACLLOG Levels
 }
 
@@ -32,7 +33,7 @@ Game.prototype.start = function() {
   //Create new player
   this.player = new Player(this.canvas);
   //Draw bubbles
-  this.bubble = new Bubbles(this.canvas, 300, 400);
+  this.bubble = new Bubbles(this.canvas, 300, 400); //This should be loadlevel()
 
   //Add event listener for right/left keys
   this.handleKeyDown = function(event) {
@@ -40,6 +41,9 @@ Game.prototype.start = function() {
       this.player.move("left");
     } else if (event.key === "ArrowRight") {
       this.player.move("right");
+    }
+    if (event.key === " ") {
+      this.shoot();
     }
   };
   document.body.addEventListener("keydown", this.handleKeyDown.bind(this));
@@ -73,14 +77,11 @@ Game.prototype.updateStatus = function() {
   this.clearCanvas();
   this.bubble.update();
   this.bubble.draw();
+  this.drawBullet();
   this.player.draw();
 };
 
 Game.prototype.updateCanvas = function() {}; // IDK WHY THIS IS HERE?
-
-Game.prototype.draw = function() {
-  this.player.draw();
-};
 
 Game.prototype.goToGameOver = function() {};
 
@@ -92,8 +93,33 @@ Game.prototype.removeGameScreen = function() {};
 
 Game.prototype.restartGame = function() {};
 
+Game.prototype.shoot = function() {
+  if (this.player.ammo > 0) {
+    let bullet = new Bullets();
+    bullet.x = 400;
+    bullet.y = 300;
+    this.bullets.push(bullet);
+  }
+};
 //Backlog
 // Game.prototype.loadLevel = function() {
 //   let bubble = new Bubbles(this.canvas,300,200);
 //   this.bubbles.push(bubble);
 // };
+
+Game.prototype.countLevelTime = function() {};
+
+Game.prototype.drawBullet = function() {
+  this.bullets.forEach(function(bulletObject) {
+    console.log('bulletObject :', bulletObject);
+
+    this.ctx.fillStyle = "red";
+    // fillRect(x, y, width, height)
+    this.ctx.fillRect(
+      bulletObject.x,
+      bulletObject.y,
+      bulletObject.width,
+      bulletObject.height
+    );
+  }, this);
+};

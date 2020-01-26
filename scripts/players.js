@@ -5,22 +5,28 @@ function Player(canvas) {
   this.size = 100;
   this.x = this.canvas.width / 2;
   this.y = this.canvas.height - this.size;
+  this.ammo = 1;
 }
 
 Player.prototype.move = function(moveString) {
-  switch (moveString) {
-    case "left":
-      this.x -= 6;
-      break;
-    case "right":
-      this.x += 6;
-      break;
+  if (this.screenCollision(moveString)) {
+    switch (moveString) {
+      case "left":
+        this.x -= 6;
+        break;
+      case "right":
+        this.x += 6;
+        break;
+    }
   }
 };
 
-Player.prototype.shoot = function() {};
-
-Player.prototype.screenCollision = function() {};
+Player.prototype.screenCollision = function(moveString) {
+  if (this.x <= 0 && moveString === "left") return false;
+  else if (this.x + this.size > this.canvas.width && moveString === "right")
+    return false;
+  return true;
+};
 
 Player.prototype.draw = function() {
   this.ctx.fillStyle = "#66D3FA";
