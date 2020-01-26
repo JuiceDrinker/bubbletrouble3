@@ -14,6 +14,7 @@ function Game() {
   this.score = 0;
   this.levelTimeOut = false;
   // BACLLOG Levels
+  this.bullet;
 }
 
 Game.prototype.start = function() {
@@ -41,8 +42,7 @@ Game.prototype.start = function() {
       this.player.move("left");
     } else if (event.key === "ArrowRight") {
       this.player.move("right");
-    }
-    if (event.key === " ") {
+    } else if (event.key === " ") {
       this.shoot();
     }
   };
@@ -55,7 +55,6 @@ Game.prototype.start = function() {
 Game.prototype.startLoop = function() {
   var loop = function() {
     if (this.gameRunning) {
-      console.log("game running");
       this.updateStatus();
       requestAnimationFrame(loop);
     }
@@ -64,7 +63,12 @@ Game.prototype.startLoop = function() {
   requestAnimationFrame(loop);
 };
 
-Game.prototype.checkCollision = function() {};
+Game.prototype.checkCollision = function() {
+  if(this.bullets.length > 0 && this.didCollide(this.bubble,this.bullets[0])){
+    this.bubble.size = 0;
+  }
+  
+};
 
 Game.prototype.updateLevel = function() {};
 
@@ -77,7 +81,9 @@ Game.prototype.updateStatus = function() {
   this.clearCanvas();
   this.bubble.update();
   this.bubble.draw();
+  this.updateBullets();
   this.drawBullet();
+  this.checkCollision();
   this.player.draw();
 };
 
@@ -95,11 +101,13 @@ Game.prototype.restartGame = function() {};
 
 Game.prototype.shoot = function() {
   if (this.player.ammo > 0) {
-    let bullet = new Bullets();
-    bullet.x = 400;
-    bullet.y = 300;
+    let bullet = new Bullets(this.canvas);
+    bullet.x = this.player.x + this.player.size / 2 - bullet.width / 2;
+    bullet.y = this.player.y;
     this.bullets.push(bullet);
+    this.player.ammo--;
   }
+  
 };
 //Backlog
 // Game.prototype.loadLevel = function() {
@@ -110,16 +118,49 @@ Game.prototype.shoot = function() {
 Game.prototype.countLevelTime = function() {};
 
 Game.prototype.drawBullet = function() {
-  this.bullets.forEach(function(bulletObject) {
-    console.log('bulletObject :', bulletObject);
+  if (this.bullets.length > 0) {
+    this.bullets.forEach(function(bulletObject, index) {
+      if (bulletObject.isMaxLength()) {
+        this.bullets.splice(index, 1);
+        this.player.ammo++;
+      }
+      this.ctx.fillStyle = "red";
+      // fillRect(x, y, width, height)
+      this.ctx.fillRect(
+        bulletObject.x,
+        bulletObject.y,
+        bulletObject.width,
+        bulletObject.height
+      );
+    }, this);
+  }
+};
 
-    this.ctx.fillStyle = "red";
-    // fillRect(x, y, width, height)
-    this.ctx.fillRect(
-      bulletObject.x,
-      bulletObject.y,
-      bulletObject.width,
-      bulletObject.height
-    );
+Game.prototype.updateBullets = function() {
+  this.bullets.forEach(function(bulletObject) {
+    bulletObject.updateBullet();
   }, this);
+};
+
+Game.prototype.didCollide = function(bubble, bullet) {
+  var bubbleLeft = bubble.x;
+  var bubbleRight = bubble.x + bubble.size;
+  var bubbleTop = bubble.y;
+  var bubbleBottom = bubble.y + bubble.size;
+
+  var bulletLeft = bullet.x;
+  var bulletRight = bullet.x + bullet.width;
+  var bulletTop = bullet.y;
+  var bulletBottom = bullet.y + bullet.height;
+
+  var crossRight = bulletLeft <= bubbleRight && bulletLeft >= bubbleLeft;
+  var crossLeft = bulletRight >= bubbleLeft && bulletRight <= bubbleRight;
+  var crossTop = bulletBottom >= bubbleTop && bulletBottom <= bubbleBottom;
+  var crossBottom = bulletTop <= bubbleBottom && bulletTop >= bubbleTop;
+
+  if ((crossRight || crossLeft) && (crossBottom || crossTop)) {
+    console.log("collided");
+    return true;
+  }
+  return false;
 };

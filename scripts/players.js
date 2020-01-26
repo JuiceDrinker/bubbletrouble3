@@ -3,6 +3,7 @@ function Player(canvas) {
   this.ctx = this.canvas.getContext("2d");
   this.lives = 5;
   this.size = 100;
+  this.speed = 8;
   this.x = this.canvas.width / 2;
   this.y = this.canvas.height - this.size;
   this.ammo = 1;
@@ -12,10 +13,12 @@ Player.prototype.move = function(moveString) {
   if (this.screenCollision(moveString)) {
     switch (moveString) {
       case "left":
-        this.x -= 6;
+        this.x -= this.speed;
         break;
       case "right":
-        this.x += 6;
+        this.x += this.speed;
+        break;
+      default:
         break;
     }
   }

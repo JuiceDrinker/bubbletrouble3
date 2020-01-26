@@ -1,3 +1,4 @@
+"use strict"
 function Bubbles(canvas, x, y) {
   //Not sure if we need to put canvas here
   this.canvasContainer = document.querySelector(".canvas-container");
