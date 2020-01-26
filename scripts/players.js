@@ -7,15 +7,13 @@ function Player(canvas) {
   this.y = this.canvas.height - this.size;
 }
 
-Player.prototype.move = function(event) {
-  switch (event) {
-    case 37:
-      console.log("moving left");
-      this.x -= 10;
+Player.prototype.move = function(moveString) {
+  switch (moveString) {
+    case "left":
+      this.x -= 6;
       break;
-    case 39:
-      console.log("moving right");
-      this.x += 10;
+    case "right":
+      this.x += 6;
       break;
   }
 };

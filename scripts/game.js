@@ -32,10 +32,17 @@ Game.prototype.start = function() {
   //Create new player
   this.player = new Player(this.canvas);
   //Draw bubbles
-  this.bubble = new Bubbles(this.canvas,300,400);
+  this.bubble = new Bubbles(this.canvas, 300, 400);
 
   //Add event listener for right/left keys
-  document.body.addEventListener("keydown", this.player.move);
+  this.handleKeyDown = function(event) {
+    if (event.key === "ArrowLeft") {
+      this.player.move("left");
+    } else if (event.key === "ArrowRight") {
+      this.player.move("right");
+    }
+  };
+  document.body.addEventListener("keydown", this.handleKeyDown.bind(this));
   //Start game loop
   //this.loadLevel();
   this.startLoop();
