@@ -67,6 +67,13 @@ Game.prototype.checkCollision = function() {
   if(this.bullets.length > 0 && this.didCollide(this.bubble,this.bullets[0])){
     this.bubble.size = 0;
   }
+  if(this.didCollide(this.player, this.bubble)){
+    this.player.removeLife();
+    //TODO : should restart game
+    if(this.player.lives === 0){
+      this.goToGameOver();
+    }
+  }
   
 };
 
@@ -89,15 +96,19 @@ Game.prototype.updateStatus = function() {
 
 Game.prototype.updateCanvas = function() {}; // IDK WHY THIS IS HERE?
 
-Game.prototype.goToGameOver = function() {};
+Game.prototype.goToGameOver = function() {    
+  this.removeGameScreen();};
 
 Game.prototype.removePlayerLife = function() {};
 
 Game.prototype.handleBubblePop = function() {};
 
-Game.prototype.removeGameScreen = function() {};
+Game.prototype.removeGameScreen = function() {
+  this.gameScreen.remove();
+};
 
-Game.prototype.restartGame = function() {};
+Game.prototype.restartGame = function() {
+};
 
 Game.prototype.shoot = function() {
   if (this.player.ammo > 0) {
@@ -142,21 +153,21 @@ Game.prototype.updateBullets = function() {
   }, this);
 };
 
-Game.prototype.didCollide = function(bubble, bullet) {
-  var bubbleLeft = bubble.x;
-  var bubbleRight = bubble.x + bubble.size;
-  var bubbleTop = bubble.y;
-  var bubbleBottom = bubble.y + bubble.size;
+Game.prototype.didCollide = function(firstTarget, secondTarget) {
+  var firstTargetLeft = firstTarget.x;
+  var firstTargetRight = firstTarget.x + firstTarget.size;
+  var firstTargetTop = firstTarget.y;
+  var firstTargetBottom = firstTarget.y + firstTarget.size;
 
-  var bulletLeft = bullet.x;
-  var bulletRight = bullet.x + bullet.width;
-  var bulletTop = bullet.y;
-  var bulletBottom = bullet.y + bullet.height;
+  var secondTargetLeft = secondTarget.x;
+  var secondTargetRight = secondTarget.x + secondTarget.width;
+  var secondTargetTop = secondTarget.y;
+  var secondTargetBottom = secondTarget.y + secondTarget.height;
 
-  var crossRight = bulletLeft <= bubbleRight && bulletLeft >= bubbleLeft;
-  var crossLeft = bulletRight >= bubbleLeft && bulletRight <= bubbleRight;
-  var crossTop = bulletBottom >= bubbleTop && bulletBottom <= bubbleBottom;
-  var crossBottom = bulletTop <= bubbleBottom && bulletTop >= bubbleTop;
+  var crossRight = secondTargetLeft <= firstTargetRight && secondTargetLeft >= firstTargetLeft;
+  var crossLeft = secondTargetRight >= firstTargetLeft && secondTargetRight <= firstTargetRight;
+  var crossTop = secondTargetBottom >= firstTargetTop && secondTargetBottom <= firstTargetBottom;
+  var crossBottom = secondTargetTop <= firstTargetBottom && secondTargetTop >= firstTargetTop;
 
   if ((crossRight || crossLeft) && (crossBottom || crossTop)) {
     console.log("collided");
