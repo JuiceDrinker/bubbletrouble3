@@ -31,7 +31,6 @@ function main() {
     let gameScreen = buildDom(`
       <main class="game">
       <span>Score: </span><span id="score">0</span>
-      <span>Lives: </span><span id="lives">0</span>
       <section class="canvas-container">
         <canvas></canvas>
       </section>
