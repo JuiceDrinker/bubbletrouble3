@@ -15,6 +15,7 @@ function Game() {
   this.levelTimeOut = false;
   // BACLLOG Levels
   this.bullet;
+  this.keyPressLog = [];
 }
 
 Game.prototype.start = function() {
@@ -40,30 +41,38 @@ Game.prototype.start = function() {
 
   //Add event listener for right/left keys
   this.handleKeyDown = function(event) {
-    switch (event.key) {
-      case " ":
-        this.shoot();
-        break;
-      case "ArrowLeft":
-        this.player.move("left");
-        break;
-      case "ArrowRight":
-        this.player.move("right");
-        break;
-
-      default:
-        break;
-    }
-    // if (event.key === "ArrowLeft") {
-    //   this.player.move("left");
-    // } else if (event.key === "ArrowRight") {
-    //   this.player.move("right");
-    // }
-    // if (event.key === " ") {
-    //   this.shoot();
-    // }
+    console.log(event.keyCode);
+    this.keyPressLog.push(event.keyCode);
+    this.keyPressLog.forEach(function(keyPress){
+      switch (keyPress) {
+        case 37:
+          this.player.move("left");
+          break;
+        case 39:
+          console.log("right");
+          this.player.move("right");
+          break; 
+        case 32:
+          this.player.move("right")
+          this.shoot();
+        default:
+          break;
+      }
+      const newArray = this.keyPressLog.filter(function(e){
+        return e !== event.keyCode;
+      })
+      this.keyPressLog = [...newArray]
+    },this)
+ 
   };
+
+  // this.handleShoot = function(event){
+  //   if(event.keyCode === 32){
+  //     this.shoot();
+  //   }
+  // }
   document.body.addEventListener("keydown", this.handleKeyDown.bind(this));
+  // document.body.addEventListener("keypress", this.handleShoot.bind(this));
   //Start game loop
   //this.loadLevel();
   this.startLoop();
@@ -250,3 +259,4 @@ Game.prototype.printLives = function() {
   let livesElement = document.querySelector("span#lives");
   livesElement.innerHTML = this.player.lives;
 };
+

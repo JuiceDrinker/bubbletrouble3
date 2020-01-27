@@ -3,10 +3,6 @@ function Bubbles(canvas, x, y) {
   //Not sure if we need to put canvas here
   this.canvas = canvas;
   this.ctx = this.canvas.getContext("2d");
-
-  // //Get dimensins of container with margins/paddings included.
-  // this.containerHeight = this.canvasContainer.offsetHeight;
-  // this.containerWidth = this.canvasContainer.offsetWidth;
   //Size/"Lives"
   this.size = 50;
   this.width = this.size;

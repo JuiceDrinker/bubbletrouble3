@@ -5,7 +5,7 @@ function Player(canvas) {
   this.size = 100;
   this.width = this.size;
   this.heieght = this.size
-  this.speed = 8;
+  this.speed = 15;
   this.x = this.canvas.width / 2;
   this.y = this.canvas.height - this.size;
   this.ammo = 1;
