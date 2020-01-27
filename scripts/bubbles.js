@@ -10,6 +10,8 @@ function Bubbles(canvas, x, y) {
   this.containerWidth = this.canvasContainer.offsetWidth;
   //Size/"Lives"
   this.size = 50;
+  this.width = this.size;
+  this.heieght = this.size
   this.vx = 10;
   this.vxmax = 20;
   this.vxmin = 3;

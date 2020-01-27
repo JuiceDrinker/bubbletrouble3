@@ -34,7 +34,9 @@ Game.prototype.start = function() {
   //Create new player
   this.player = new Player(this.canvas);
   //Draw bubbles
-  this.bubble = new Bubbles(this.canvas, 300, 400); //This should be loadlevel()
+  //this.bubble = new Bubbles(this.canvas, 300, 400); //This should be loadlevel()
+  this.loadLevel();
+  console.log("loading");
 
   //Add event listener for right/left keys
   this.handleKeyDown = function(event) {
@@ -42,7 +44,8 @@ Game.prototype.start = function() {
       this.player.move("left");
     } else if (event.key === "ArrowRight") {
       this.player.move("right");
-    } else if (event.key === " ") {
+    }
+    if (event.key === " ") {
       this.shoot();
     }
   };
@@ -54,8 +57,8 @@ Game.prototype.start = function() {
 
 Game.prototype.startLoop = function() {
   var loop = function() {
+    this.updateStatus();
     if (this.gameRunning) {
-      this.updateStatus();
       requestAnimationFrame(loop);
     }
   }.bind(this);
@@ -63,19 +66,32 @@ Game.prototype.startLoop = function() {
   requestAnimationFrame(loop);
 };
 
-Game.prototype.checkCollision = function() {
-  if(this.bullets.length > 0 && this.didCollide(this.bubble,this.bullets[0])){
-    this.bubble.size = 0;
-  }
-  if(this.didCollide(this.player, this.bubble)){
-    this.player.removeLife();
-    //TODO : should restart game
-    if(this.player.lives === 0){
-      this.goToGameOver();
+Game.prototype.checkPlayerCollision = function() {
+  this.bubbles.forEach(function(bubble) {
+    if (this.didCollide(this.player, bubble)) {
+      this.player.removeLife();
+      // this.gameRunning = false;
+      bubble.x = 1000000000000000;
+      console.log("this.player.lives :", this.player.lives);
+      //TODO : should restart game
+      if (this.player.lives <= 0) {
+        this.goToGameOver();
+      }
     }
-  }
-  
+  }, this);
 };
+
+Game.prototype.checkBulletCollision = function(){
+  this.bubbles.forEach(function(bubble){
+    if (
+      this.bullets.length > 0 &&
+      this.didCollide(bubble, this.bullets[0])
+    ) {
+      bubble.size = 0;
+    }
+  },this)
+
+}
 
 Game.prototype.updateLevel = function() {};
 
@@ -85,19 +101,24 @@ Game.prototype.clearCanvas = function() {
 };
 
 Game.prototype.updateStatus = function() {
-  this.clearCanvas();
-  this.bubble.update();
-  this.bubble.draw();
+  this.bubbles.forEach(function(bubble) {
+    console.log("bubble :", bubble);
+    bubble.update();
+  }, this);
   this.updateBullets();
+  this.checkPlayerCollision();
+  this.checkBulletCollision();
+  this.clearCanvas();
+  this.drawBubble();
   this.drawBullet();
-  this.checkCollision();
   this.player.draw();
 };
 
 Game.prototype.updateCanvas = function() {}; // IDK WHY THIS IS HERE?
 
-Game.prototype.goToGameOver = function() {    
-  this.removeGameScreen();};
+Game.prototype.goToGameOver = function() {
+  this.removeGameScreen();
+};
 
 Game.prototype.removePlayerLife = function() {};
 
@@ -107,8 +128,7 @@ Game.prototype.removeGameScreen = function() {
   this.gameScreen.remove();
 };
 
-Game.prototype.restartGame = function() {
-};
+Game.prototype.restartGame = function() {};
 
 Game.prototype.shoot = function() {
   if (this.player.ammo > 0) {
@@ -118,13 +138,14 @@ Game.prototype.shoot = function() {
     this.bullets.push(bullet);
     this.player.ammo--;
   }
-  
 };
-//Backlog
-// Game.prototype.loadLevel = function() {
-//   let bubble = new Bubbles(this.canvas,300,200);
-//   this.bubbles.push(bubble);
-// };
+// Backlog
+Game.prototype.loadLevel = function() {
+  let bubble = new Bubbles(this.canvas, 300, 200);
+  this.bubbles.push(bubble);
+  let bubble2 = new Bubbles(this.canvas, 400, 200);
+  this.bubbles.push(bubble2);
+};
 
 Game.prototype.countLevelTime = function() {};
 
@@ -164,14 +185,26 @@ Game.prototype.didCollide = function(firstTarget, secondTarget) {
   var secondTargetTop = secondTarget.y;
   var secondTargetBottom = secondTarget.y + secondTarget.height;
 
-  var crossRight = secondTargetLeft <= firstTargetRight && secondTargetLeft >= firstTargetLeft;
-  var crossLeft = secondTargetRight >= firstTargetLeft && secondTargetRight <= firstTargetRight;
-  var crossTop = secondTargetBottom >= firstTargetTop && secondTargetBottom <= firstTargetBottom;
-  var crossBottom = secondTargetTop <= firstTargetBottom && secondTargetTop >= firstTargetTop;
+  var crossRight =
+    secondTargetLeft <= firstTargetRight && secondTargetLeft >= firstTargetLeft;
+  var crossLeft =
+    secondTargetRight >= firstTargetLeft &&
+    secondTargetRight <= firstTargetRight;
+  var crossTop =
+    secondTargetBottom >= firstTargetTop &&
+    secondTargetBottom <= firstTargetBottom;
+  var crossBottom =
+    secondTargetTop <= firstTargetBottom && secondTargetTop >= firstTargetTop;
 
   if ((crossRight || crossLeft) && (crossBottom || crossTop)) {
     console.log("collided");
     return true;
   }
   return false;
+};
+
+Game.prototype.drawBubble = function() {
+  this.bubbles.forEach(function(bubble) {
+    bubble.draw();
+  }, this);
 };
