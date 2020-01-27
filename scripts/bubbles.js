@@ -59,7 +59,7 @@ Bubbles.prototype.move = function() {
 };
 
 Bubbles.prototype.draw = function() {
-  this.ctx.fillStyle = "#66D3FA";
+  this.ctx.fillStyle = "green";
   // fillRect(x, y, width, height)
   this.ctx.fillRect(this.x, this.y, this.size, this.size);
 };

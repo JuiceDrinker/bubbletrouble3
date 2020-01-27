@@ -40,14 +40,25 @@ Game.prototype.start = function() {
 
   //Add event listener for right/left keys
   this.handleKeyDown = function(event) {
-    if (event.key === "ArrowLeft") {
-      this.player.move("left");
-    } else if (event.key === "ArrowRight") {
-      this.player.move("right");
+    switch(event.key){
+      case "ArrowLeft":
+        this.player.move("left");
+        break
+      case "ArrowRight":
+        this.player.move("right");
+        break;
+      case " ":
+        this.shoot();
+        break;
     }
-    if (event.key === " ") {
-      this.shoot();
-    }
+    // if (event.key === "ArrowLeft") {
+    //   this.player.move("left");
+    // } else if (event.key === "ArrowRight") {
+    //   this.player.move("right");
+    // }
+    // if (event.key === " ") {
+    //   this.shoot();
+    // }
   };
   document.body.addEventListener("keydown", this.handleKeyDown.bind(this));
   //Start game loop
@@ -70,9 +81,11 @@ Game.prototype.checkPlayerCollision = function() {
   this.bubbles.forEach(function(bubble, index) {
     if (this.didCollide(this.player, bubble)) {
       this.player.removeLife();
-      // this.gameRunning = false;
       this.bubbles.splice(index, 1);
       console.log("this.player.lives :", this.player.lives);
+      this.bubbles.length = 0;
+      this.player.x = this.containerWidth/2;
+      this.loadLevel();
       //TODO : should restart game
       if (this.player.lives <= 0) {
         this.goToGameOver();
