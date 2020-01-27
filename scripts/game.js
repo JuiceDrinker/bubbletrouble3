@@ -71,8 +71,10 @@ Game.prototype.start = function() {
 
 Game.prototype.startLoop = function() {
   var loop = function() {
-    this.updateStatus();
     if (this.gameRunning) {
+      this.printScore();
+      this.printLives();
+      this.updateStatus();
       requestAnimationFrame(loop);
     }
   }.bind(this);
@@ -85,7 +87,6 @@ Game.prototype.checkPlayerCollision = function() {
     if (this.didCollide(this.player, bubble)) {
       this.player.removeLife();
       this.bubbles.splice(index, 1);
-      console.log("this.player.lives :", this.player.lives);
       this.bubbles.length = 0;
       this.player.x = this.containerWidth / 2;
       this.loadLevel();
@@ -101,6 +102,7 @@ Game.prototype.checkBulletCollision = function() {
   this.bubbles.forEach(function(bubble, index) {
     if (this.bullets.length > 0 && this.didCollide(bubble, this.bullets[0])) {
       this.handleBubblePop(bubble, index);
+      this.score += 100;
     }
   }, this);
 };
@@ -136,7 +138,6 @@ Game.prototype.goToGameOver = function() {
 Game.prototype.removePlayerLife = function() {};
 
 Game.prototype.handleBubblePop = function(bubble, index) {
-  console.log(bubble.size);
   if (bubble.size >= 45) {
     bubble.size -= 15;
     let newBubble = new Bubbles(this.canvas, bubble.x, bubble.y);
@@ -146,7 +147,6 @@ Game.prototype.handleBubblePop = function(bubble, index) {
     this.bullets.splice(0, 1);
     this.player.ammo++;
   } else {
-    console.log("spliced");
     this.bubbles.splice(index, 1);
     this.bullets.splice(0, 1);
     this.player.ammo++;
@@ -237,6 +237,16 @@ Game.prototype.drawBubble = function() {
   }, this);
 };
 
-Game.prototype.passGameOverCallback = function(callback){
+Game.prototype.passGameOverCallback = function(callback) {
   this.onStartover = callback;
-}
+};
+
+Game.prototype.printScore = function() {
+  let scoreElement = document.querySelector("span#score");
+  scoreElement.innerHTML = this.score;
+};
+
+Game.prototype.printLives = function() {
+  let livesElement = document.querySelector("span#lives");
+  livesElement.innerHTML = this.player.lives;
+};
