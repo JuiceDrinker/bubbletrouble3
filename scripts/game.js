@@ -67,11 +67,11 @@ Game.prototype.startLoop = function() {
 };
 
 Game.prototype.checkPlayerCollision = function() {
-  this.bubbles.forEach(function(bubble) {
+  this.bubbles.forEach(function(bubble, index) {
     if (this.didCollide(this.player, bubble)) {
       this.player.removeLife();
       // this.gameRunning = false;
-      bubble.x = 1000000000000000;
+      this.bubbles.splice(index, 1);
       console.log("this.player.lives :", this.player.lives);
       //TODO : should restart game
       if (this.player.lives <= 0) {
@@ -81,17 +81,13 @@ Game.prototype.checkPlayerCollision = function() {
   }, this);
 };
 
-Game.prototype.checkBulletCollision = function(){
-  this.bubbles.forEach(function(bubble){
-    if (
-      this.bullets.length > 0 &&
-      this.didCollide(bubble, this.bullets[0])
-    ) {
-      bubble.size = 0;
+Game.prototype.checkBulletCollision = function() {
+  this.bubbles.forEach(function(bubble, index) {
+    if (this.bullets.length > 0 && this.didCollide(bubble, this.bullets[0])) {
+      this.handleBubblePop(bubble, index);
     }
-  },this)
-
-}
+  }, this);
+};
 
 Game.prototype.updateLevel = function() {};
 
@@ -102,7 +98,6 @@ Game.prototype.clearCanvas = function() {
 
 Game.prototype.updateStatus = function() {
   this.bubbles.forEach(function(bubble) {
-    console.log("bubble :", bubble);
     bubble.update();
   }, this);
   this.updateBullets();
@@ -122,7 +117,24 @@ Game.prototype.goToGameOver = function() {
 
 Game.prototype.removePlayerLife = function() {};
 
-Game.prototype.handleBubblePop = function() {};
+Game.prototype.handleBubblePop = function(bubble, index) {
+  console.log(bubble.size);
+  if (bubble.size >= 45) {
+    bubble.size -= 15;
+    let newBubble = new Bubbles(this.canvas, bubble.x, bubble.y);
+    newBubble.size = bubble.size;
+    newBubble.vx *= -1;
+    this.bubbles.push(newBubble);
+    this.bullets.splice(0,1);
+    this.player.ammo++;
+  }
+  else {
+    console.log("spliced");
+    this.bubbles.splice(index,1);
+    this.bullets.splice(0,1);
+    this.player.ammo++;
+  }
+};
 
 Game.prototype.removeGameScreen = function() {
   this.gameScreen.remove();
@@ -197,7 +209,6 @@ Game.prototype.didCollide = function(firstTarget, secondTarget) {
     secondTargetTop <= firstTargetBottom && secondTargetTop >= firstTargetTop;
 
   if ((crossRight || crossLeft) && (crossBottom || crossTop)) {
-    console.log("collided");
     return true;
   }
   return false;
