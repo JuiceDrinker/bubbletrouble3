@@ -1,13 +1,12 @@
 "use strict"
 function Bubbles(canvas, x, y) {
   //Not sure if we need to put canvas here
-  this.canvasContainer = document.querySelector(".canvas-container");
-  this.canvas = this.canvasContainer.querySelector("canvas");
+  this.canvas = canvas;
   this.ctx = this.canvas.getContext("2d");
 
-  //Get dimensins of container with margins/paddings included.
-  this.containerHeight = this.canvasContainer.offsetHeight;
-  this.containerWidth = this.canvasContainer.offsetWidth;
+  // //Get dimensins of container with margins/paddings included.
+  // this.containerHeight = this.canvasContainer.offsetHeight;
+  // this.containerWidth = this.canvasContainer.offsetWidth;
   //Size/"Lives"
   this.size = 50;
   this.width = this.size;
@@ -28,7 +27,7 @@ function Bubbles(canvas, x, y) {
 }
 
 Bubbles.prototype.checkWall = function() {
-  if (this.x + this.size > this.containerWidth && this.vx > 0) {
+  if (this.x + this.size > this.canvas.width && this.vx > 0) {
     //Check leftmos
     this.vx *= -1;
   }
@@ -38,7 +37,7 @@ Bubbles.prototype.checkWall = function() {
 };
 
 Bubbles.prototype.checkBounce = function() {
-  if (this.y >= this.containerHeight - this.size / 2 - 30 && this.vy > 0) {
+  if (this.y >= this.canvas.height - this.size / 2 - 30 && this.vy > 0) {
     if (this.vy < 60) {
       this.vy *= -1;
     } else {

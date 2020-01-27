@@ -5,10 +5,9 @@ function main() {
   var splashScreen; // Splash screen
   var gameOverScreen; //Game Over screen
 
-// BACKLOG Loading Screen 
+  // BACKLOG Loading Screen
 
-//   function buildLoadingScreen() {} 
-
+  //   function buildLoadingScreen() {}
 
   //Splash
   function buildSplashScreen() {
@@ -29,35 +28,53 @@ function main() {
 
   //Game
   function buildGameScreen() {
-     let gameScreen = buildDom(`
+    let gameScreen = buildDom(`
       <main class="game">
       <span>Score: </span><span id="score">0</span>
       <section class="canvas-container">
         <canvas></canvas>
       </section>
-    </main>`)
+    </main>`);
 
-    document.body.appendChild(gameScreen)
+    document.body.appendChild(gameScreen);
     return gameScreen;
   }
 
   function removeGameScreen() {
-      game.removeGameScreen()
+    game.removeGameScreen();
   }
 
   //Endgame
-  function buildEndgameScreen() {}
-  function removeEndgameScreen() {}
+  function buildEndgameScreen() {
+    gameOverScreen = buildDom(
+      `<main><h1>GAME OVER</h1> <button id ="restart-game"> Restart Game </button></main>`
+    ); // FIX THIS
+    document.body.appendChild(gameOverScreen);
+  }
+  function removeEndgameScreen() {
+    if (gameOverScreen) {
+      gameOverScreen.remove();
+    }
+  }
 
   //Setting game states
   function startGame() {
     removeSplashScreen();
+    removeEndgameScreen();
     game = new Game();
     game.gameScreen = buildGameScreen();
     game.start();
+    game.passGameOverCallback(function() {
+      endGame();
+    });
   }
 
-  function endGame() {}
+  function endGame() {
+    removeGameScreen();
+    buildEndgameScreen();
+    let restartGameButton = document.querySelector('#restart-game')
+    restartGameButton.addEventListener('click', startGame)
+  }
 
   buildSplashScreen();
 }

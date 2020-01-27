@@ -40,15 +40,18 @@ Game.prototype.start = function() {
 
   //Add event listener for right/left keys
   this.handleKeyDown = function(event) {
-    switch(event.key){
+    switch (event.key) {
+      case " ":
+        this.shoot();
+        break;
       case "ArrowLeft":
         this.player.move("left");
-        break
+        break;
       case "ArrowRight":
         this.player.move("right");
         break;
-      case " ":
-        this.shoot();
+
+      default:
         break;
     }
     // if (event.key === "ArrowLeft") {
@@ -84,7 +87,7 @@ Game.prototype.checkPlayerCollision = function() {
       this.bubbles.splice(index, 1);
       console.log("this.player.lives :", this.player.lives);
       this.bubbles.length = 0;
-      this.player.x = this.containerWidth/2;
+      this.player.x = this.containerWidth / 2;
       this.loadLevel();
       //TODO : should restart game
       if (this.player.lives <= 0) {
@@ -125,7 +128,9 @@ Game.prototype.updateStatus = function() {
 Game.prototype.updateCanvas = function() {}; // IDK WHY THIS IS HERE?
 
 Game.prototype.goToGameOver = function() {
-  this.removeGameScreen();
+  this.gameRunning = false;
+  this.onStartover();
+  // this.removeGameScreen();
 };
 
 Game.prototype.removePlayerLife = function() {};
@@ -138,13 +143,12 @@ Game.prototype.handleBubblePop = function(bubble, index) {
     newBubble.size = bubble.size;
     newBubble.vx *= -1;
     this.bubbles.push(newBubble);
-    this.bullets.splice(0,1);
+    this.bullets.splice(0, 1);
     this.player.ammo++;
-  }
-  else {
+  } else {
     console.log("spliced");
-    this.bubbles.splice(index,1);
-    this.bullets.splice(0,1);
+    this.bubbles.splice(index, 1);
+    this.bullets.splice(0, 1);
     this.player.ammo++;
   }
 };
@@ -232,3 +236,7 @@ Game.prototype.drawBubble = function() {
     bubble.draw();
   }, this);
 };
+
+Game.prototype.passGameOverCallback = function(callback){
+  this.onStartover = callback;
+}
