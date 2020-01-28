@@ -184,8 +184,11 @@ Game.prototype.drawBullet = function() {
         this.player.ammo++;
       }
       this.ctx.fillStyle = "red";
+      var img = new Image();
+      img.src= "./images/ammo_machinegun.png"
       // fillRect(x, y, width, height)
-      this.ctx.fillRect(
+      this.ctx.drawImage(
+        img,
         bulletObject.x,
         bulletObject.y,
         bulletObject.width,

@@ -2,12 +2,12 @@ function Player(canvas) {
   this.canvas = canvas;
   this.ctx = this.canvas.getContext("2d");
   this.lives = 5;
-  this.size = 100;
+  this.size = 75;
   this.width = this.size;
   this.heieght = this.size
   this.speed = 15;
   this.x = this.canvas.width / 2;
-  this.y = this.canvas.height - this.size;
+  this.y = this.canvas.height - 347 + this.size;
   this.ammo = 1;
 }
 

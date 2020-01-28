@@ -1,4 +1,4 @@
-"use strict"
+"use strict";
 function Bubbles(canvas, x, y) {
   //Not sure if we need to put canvas here
   this.canvas = canvas;
@@ -6,13 +6,13 @@ function Bubbles(canvas, x, y) {
   //Size/"Lives"
   this.size = 50;
   this.width = this.size;
-  this.heieght = this.size
+  this.heieght = this.size;
   this.vx = 10;
   this.vxmax = 20;
   this.vxmin = 3;
   this.vy = 10;
   this.vymin = 20;
-  this.vymax = 80;
+  this.vymax = 50;
   // (x,y)
   this.x = x;
   this.y = y;
@@ -33,8 +33,8 @@ Bubbles.prototype.checkWall = function() {
 };
 
 Bubbles.prototype.checkBounce = function() {
-  if (this.y >= this.canvas.height - this.size / 2 - 30 && this.vy > 0) {
-    if (this.vy < 60) {
+  if (this.y >= this.canvas.height - 272 && this.vy > 0) {
+    if (this.vy < this.vymax) {
       this.vy *= -1;
     } else {
       this.vy *= -0.9;
@@ -55,8 +55,10 @@ Bubbles.prototype.move = function() {
 
 Bubbles.prototype.draw = function() {
   this.ctx.fillStyle = "green";
+  var img = new Image();
+  img.src = "./images/ball_volley2.png"
   // fillRect(x, y, width, height)
-  this.ctx.fillRect(this.x, this.y, this.size, this.size);
+  this.ctx.drawImage(img, this.x, this.y, this.size, this.size);
 };
 
 Bubbles.prototype.returnBubble = function() {
