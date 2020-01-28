@@ -15,7 +15,7 @@ function Game() {
   this.levelTimeOut = false;
   // BACLLOG Levels
   this.bullet;
-  this.keyPressLog = [];
+  this.keys = {};
   this.img = new Image();
   this.img.src = "./images/1920x1080.png";
 }
@@ -41,25 +41,40 @@ Game.prototype.start = function() {
   console.log("loading");
 
   //Add event listener for right/left keys
-  this.handleKeyDown = function(event) {
-    switch (event.keyCode) {
-      case 37:
-        this.player.move("left");
-        break;
-      case 39:
-        this.player.move("right");
-        break;
-      default:
-        break;
-    }
-  };
+  // this.handleKeyDown = function(event) {
+  //   switch (event.keyCode) {
+  //     case 37:
+  //       this.player.move("left");
+  //       break;
+  //     case 39:
+  //       this.player.move("right");
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  // };
 
   this.handleShoot = function(event) {
     if (event.keyCode === 32) {
       this.shoot();
     }
   };
-  document.body.addEventListener("keydown", this.handleKeyDown.bind(this));
+
+  window.addEventListener(
+    "keydown",
+    function(event) {
+      if (!this.keys[event.key]) this.keys[event.key] = true;
+      // console.log("Pressed ", event.key);
+    }.bind(this)
+  );
+  window.addEventListener(
+    "keyup",
+    function(event) {
+      if (this.keys[event.key]) this.keys[event.key] = false;
+      // console.log("Released ", event.key);
+    }.bind(this)
+  );
+  // document.body.addEventListener("keydown", this.handleKeyDown.bind(this));
   document.body.addEventListener("keypress", this.handleShoot.bind(this));
   //Start game loop
   //this.loadLevel();
@@ -69,6 +84,8 @@ Game.prototype.start = function() {
 Game.prototype.startLoop = function() {
   var loop = function() {
     if (this.gameRunning) {
+      if (this.keys["ArrowLeft"]) this.player.move("left");
+      if (this.keys["ArrowRight"]) this.player.move("right");
       this.printScore();
       this.printLives();
       this.updateStatus();
@@ -185,7 +202,7 @@ Game.prototype.drawBullet = function() {
       }
       this.ctx.fillStyle = "red";
       var img = new Image();
-      img.src= "./images/ammo_machinegun.png"
+      img.src = "./images/ammo_machinegun.png";
       // fillRect(x, y, width, height)
       this.ctx.drawImage(
         img,

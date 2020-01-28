@@ -16,14 +16,17 @@ function main() {
         <h1>Bubble Trouble 3</h1>
         <button id="single">1 player</button>
         <button id="exit">Exit Game</button>
-        <h3> Made by Adi Subramanian</h3>
+        <h3> &#9400 Made by Adi Subramanian</h3>
     </main>`
     );
     document.body.appendChild(splashScreen);
     let singlePlayer = document.querySelector("#single");
     singlePlayer.addEventListener("click", startGame);
-    let exitGame = document.querySelector('#exit');
-    exitGame.onClick = window.close();
+    let exitGame = document.querySelector("#exit");
+    exitGame.addEventListener("onclick", function() {
+      window.close();
+      return false;
+    });
   }
 
   function removeSplashScreen() {

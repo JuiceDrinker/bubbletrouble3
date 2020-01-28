@@ -1,3 +1,5 @@
+"use strict"
+
 function Player(canvas) {
   this.canvas = canvas;
   this.ctx = this.canvas.getContext("2d");
