@@ -154,40 +154,38 @@ body {
   border: 1px red solid;
   width: 100%;
   height: 100vh;
-
 }
 
 canvas {
   background-image: url(../images/1920x1080.png);
 }
 
-.splash{
-	display:flex;
-	height: 100%;
-	margin: 0px auto;
-	text-align: center;
-	justify-content: center;
-	flex-direction: column;
-	align-items: center;
+.splash {
+  display: flex;
+  height: 100%;
+  margin: 0px auto;
+  text-align: center;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 }
 
-.splash h1{
-	font-size: 36px;
-	margin-top: 200px;
-	margin-bottom: 50px;
+.splash h1 {
+  font-size: 36px;
+  margin-top: 200px;
+  margin-bottom: 50px;
 }
 
-.splash button{
-	background-color: red;
-	color: white;
-	padding: 20px;
-	border: 1px solid black;
-	border-radius: 2px;
-	margin-bottom: 20px;
+.splash button {
+  background-color: red;
+  color: white;
+  padding: 20px;
+  border: 1px solid black;
+  border-radius: 2px;
+  margin-bottom: 20px;
 }
 
-.splash h3{
-	margin-top: 20px;
-	color: white;
+.splash h3 {
+  margin-top: 20px;
+  color: white;
 }
-

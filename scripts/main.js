@@ -23,10 +23,7 @@ function main() {
     let singlePlayer = document.querySelector("#single");
     singlePlayer.addEventListener("click", startGame);
     let exitGame = document.querySelector("#exit");
-    exitGame.addEventListener("onclick", function() {
-      window.close();
-      return false;
-    });
+    exitGame.onclick = window.close()
   }
 
   function removeSplashScreen() {
