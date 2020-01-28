@@ -16,6 +16,8 @@ function Game() {
   // BACLLOG Levels
   this.bullet;
   this.keyPressLog = [];
+  this.img = new Image();
+  this.img.src = "./images/1920x1080.png";
 }
 
 Game.prototype.start = function() {
@@ -29,7 +31,6 @@ Game.prototype.start = function() {
   //Canvas to take up all of the parents width.
   this.canvas.setAttribute("width", this.containerWidth);
   this.canvas.setAttribute("height", this.containerHeight);
-
   this.gameRunning = !this.gameRunning;
 
   //Create new player
@@ -68,8 +69,9 @@ Game.prototype.start = function() {
 Game.prototype.startLoop = function() {
   var loop = function() {
     if (this.gameRunning) {
+      this.printScore();
+      this.printLives();
       this.updateStatus();
-
       requestAnimationFrame(loop);
     }
   }.bind(this);
@@ -107,6 +109,7 @@ Game.prototype.updateLevel = function() {};
 Game.prototype.clearCanvas = function() {
   this.ctx.fillStyle = "white";
   this.ctx.fillRect(0, 0, this.containerWidth, this.containerHeight);
+  this.ctx.drawImage(this.img, 0, 0, this.containerWidth, this.containerHeight);
 };
 
 Game.prototype.updateStatus = function() {
@@ -119,8 +122,6 @@ Game.prototype.updateStatus = function() {
   this.clearCanvas();
   this.drawBubble();
   this.drawBullet();
-  this.printScore();
-  this.printLives();
   this.player.draw();
 };
 
@@ -245,5 +246,5 @@ Game.prototype.printScore = function() {
 
 Game.prototype.printLives = function() {
   let livesElement = document.querySelector("span#lives");
-  if(this.player) livesElement.innerHTML = this.player.lives;
+  if (this.player) livesElement.innerHTML = this.player.lives;
 };

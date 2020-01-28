@@ -12,14 +12,18 @@ function main() {
   //Splash
   function buildSplashScreen() {
     splashScreen = buildDom(
-      ` <main>
+      ` <main class ="splash">
         <h1>Bubble Trouble 3</h1>
         <button id="single">1 player</button>
+        <button id="exit">Exit Game</button>
+        <h3> Made by Adi Subramanian</h3>
     </main>`
     );
     document.body.appendChild(splashScreen);
     let singlePlayer = document.querySelector("#single");
     singlePlayer.addEventListener("click", startGame);
+    let exitGame = document.querySelector('#exit');
+    exitGame.onClick = window.close();
   }
 
   function removeSplashScreen() {
@@ -73,8 +77,8 @@ function main() {
   function endGame() {
     removeGameScreen();
     buildEndgameScreen();
-    let restartGameButton = document.querySelector('#restart-game')
-    restartGameButton.addEventListener('click', startGame)
+    let restartGameButton = document.querySelector("#restart-game");
+    restartGameButton.addEventListener("click", startGame);
   }
 
   buildSplashScreen();
