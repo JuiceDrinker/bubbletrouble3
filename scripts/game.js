@@ -15,6 +15,9 @@ function Game() {
   this.levelTimeOut = false;
   // BACLLOG Levels
   this.bullet;
+  this.keys = {};
+  this.img = new Image();
+  this.img.src = "./images/1920x1080.png";
 }
 
 Game.prototype.start = function() {
@@ -28,7 +31,6 @@ Game.prototype.start = function() {
   //Canvas to take up all of the parents width.
   this.canvas.setAttribute("width", this.containerWidth);
   this.canvas.setAttribute("height", this.containerHeight);
-
   this.gameRunning = !this.gameRunning;
 
   //Create new player
@@ -39,28 +41,41 @@ Game.prototype.start = function() {
   console.log("loading");
 
   //Add event listener for right/left keys
-  this.handleKeyDown = function(event) {
-    switch(event.key){
-      case "ArrowLeft":
-        this.player.move("left");
-        break
-      case "ArrowRight":
-        this.player.move("right");
-        break;
-      case " ":
-        this.shoot();
-        break;
+  // this.handleKeyDown = function(event) {
+  //   switch (event.keyCode) {
+  //     case 37:
+  //       this.player.move("left");
+  //       break;
+  //     case 39:
+  //       this.player.move("right");
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  // };
+
+  this.handleShoot = function(event) {
+    if (event.keyCode === 32) {
+      this.shoot();
     }
-    // if (event.key === "ArrowLeft") {
-    //   this.player.move("left");
-    // } else if (event.key === "ArrowRight") {
-    //   this.player.move("right");
-    // }
-    // if (event.key === " ") {
-    //   this.shoot();
-    // }
   };
-  document.body.addEventListener("keydown", this.handleKeyDown.bind(this));
+
+  window.addEventListener(
+    "keydown",
+    function(event) {
+      if (!this.keys[event.key]) this.keys[event.key] = true;
+      // console.log("Pressed ", event.key);
+    }.bind(this)
+  );
+  window.addEventListener(
+    "keyup",
+    function(event) {
+      if (this.keys[event.key]) this.keys[event.key] = false;
+      // console.log("Released ", event.key);
+    }.bind(this)
+  );
+  // document.body.addEventListener("keydown", this.handleKeyDown.bind(this));
+  document.body.addEventListener("keypress", this.handleShoot.bind(this));
   //Start game loop
   //this.loadLevel();
   this.startLoop();
@@ -68,8 +83,12 @@ Game.prototype.start = function() {
 
 Game.prototype.startLoop = function() {
   var loop = function() {
-    this.updateStatus();
     if (this.gameRunning) {
+      if (this.keys["ArrowLeft"]) this.player.move("left");
+      if (this.keys["ArrowRight"]) this.player.move("right");
+      this.printScore();
+      this.printLives();
+      this.updateStatus();
       requestAnimationFrame(loop);
     }
   }.bind(this);
@@ -82,9 +101,8 @@ Game.prototype.checkPlayerCollision = function() {
     if (this.didCollide(this.player, bubble)) {
       this.player.removeLife();
       this.bubbles.splice(index, 1);
-      console.log("this.player.lives :", this.player.lives);
       this.bubbles.length = 0;
-      this.player.x = this.containerWidth/2;
+      this.player.x = this.containerWidth / 2;
       this.loadLevel();
       //TODO : should restart game
       if (this.player.lives <= 0) {
@@ -98,6 +116,7 @@ Game.prototype.checkBulletCollision = function() {
   this.bubbles.forEach(function(bubble, index) {
     if (this.bullets.length > 0 && this.didCollide(bubble, this.bullets[0])) {
       this.handleBubblePop(bubble, index);
+      this.score += 100;
     }
   }, this);
 };
@@ -107,6 +126,7 @@ Game.prototype.updateLevel = function() {};
 Game.prototype.clearCanvas = function() {
   this.ctx.fillStyle = "white";
   this.ctx.fillRect(0, 0, this.containerWidth, this.containerHeight);
+  this.ctx.drawImage(this.img, 0, 0, this.containerWidth, this.containerHeight);
 };
 
 Game.prototype.updateStatus = function() {
@@ -125,26 +145,25 @@ Game.prototype.updateStatus = function() {
 Game.prototype.updateCanvas = function() {}; // IDK WHY THIS IS HERE?
 
 Game.prototype.goToGameOver = function() {
-  this.removeGameScreen();
+  this.gameRunning = false;
+  this.onStartover();
+  // this.removeGameScreen();
 };
 
 Game.prototype.removePlayerLife = function() {};
 
 Game.prototype.handleBubblePop = function(bubble, index) {
-  console.log(bubble.size);
   if (bubble.size >= 45) {
     bubble.size -= 15;
     let newBubble = new Bubbles(this.canvas, bubble.x, bubble.y);
     newBubble.size = bubble.size;
     newBubble.vx *= -1;
     this.bubbles.push(newBubble);
-    this.bullets.splice(0,1);
+    this.bullets.splice(0, 1);
     this.player.ammo++;
-  }
-  else {
-    console.log("spliced");
-    this.bubbles.splice(index,1);
-    this.bullets.splice(0,1);
+  } else {
+    this.bubbles.splice(index, 1);
+    this.bullets.splice(0, 1);
     this.player.ammo++;
   }
 };
@@ -182,8 +201,11 @@ Game.prototype.drawBullet = function() {
         this.player.ammo++;
       }
       this.ctx.fillStyle = "red";
+      var img = new Image();
+      img.src = "./images/ammo_machinegun.png";
       // fillRect(x, y, width, height)
-      this.ctx.fillRect(
+      this.ctx.drawImage(
+        img,
         bulletObject.x,
         bulletObject.y,
         bulletObject.width,
@@ -231,4 +253,18 @@ Game.prototype.drawBubble = function() {
   this.bubbles.forEach(function(bubble) {
     bubble.draw();
   }, this);
+};
+
+Game.prototype.passGameOverCallback = function(callback) {
+  this.onStartover = callback;
+};
+
+Game.prototype.printScore = function() {
+  let scoreElement = document.querySelector("span#score");
+  scoreElement.innerHTML = this.score;
+};
+
+Game.prototype.printLives = function() {
+  let livesElement = document.querySelector("span#lives");
+  if (this.player) livesElement.innerHTML = this.player.lives;
 };
