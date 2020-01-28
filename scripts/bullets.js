@@ -4,8 +4,8 @@ function Bullets(canvas) {
   //speed
   this.speed = 10;
   //direction
-  this.x = -200;
-  this.y = -100;
+  this.x;
+  this.y;
   this.width = 20;
   this.height = 40;
   //collision
