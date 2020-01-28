@@ -33,7 +33,7 @@ Bubbles.prototype.checkWall = function() {
 };
 
 Bubbles.prototype.checkBounce = function() {
-  if (this.y >= this.canvas.height - 272 && this.vy > 0) {
+  if (this.y >= this.canvas.height && this.vy > 0) {
     if (this.vy < this.vymax) {
       this.vy *= -1;
     } else {

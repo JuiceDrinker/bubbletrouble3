@@ -9,7 +9,7 @@ function Player(canvas) {
   this.heieght = this.size
   this.speed = 15;
   this.x = this.canvas.width / 2;
-  this.y = this.canvas.height - 347 + this.size;
+  this.y = this.canvas.height - this.size;
   this.ammo = 1;
 }
 
