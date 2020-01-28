@@ -3,7 +3,7 @@
 function Player(canvas) {
   this.canvas = canvas;
   this.ctx = this.canvas.getContext("2d");
-  this.lives = 0;
+  this.lives = 5;
   this.size = 75;
   this.width = this.size;
   this.heieght = this.size
