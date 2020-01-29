@@ -38,6 +38,7 @@ function main() {
       <span>Score: </span><span id="score">0</span>
       <span>Lives: </span><span id="lives">0</span>
       <span>Ammo: </span><span id="ammo">0</span>
+      <span>Time Left: </span><span id="time">0</span>
       <section class="canvas-container">
         <canvas></canvas>
       </section>
