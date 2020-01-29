@@ -41,6 +41,7 @@ function main() {
       <span>Lives: </span><span id="lives">0</span>
       <span>Ammo: </span><span id="ammo">0</span>
       <span>Time Left: </span><span id="time">0</span>
+      <span>Level: </span><span id="level"></span>
       <section class="canvas-container">
         <canvas></canvas>
       </section>
