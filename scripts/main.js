@@ -16,7 +16,6 @@ function main() {
         <h1>Bubble Trouble 3</h1>
         <button id="single">1 player</button>
         <button id="multiplayer">2 player</button>
-        <button id="controls">Edit Controls</button>
         <button id="exit">Exit Game</button>
         <h3> &#9400 2020 Adi Subramanian</h3>
     </main>`
@@ -24,8 +23,8 @@ function main() {
     document.body.appendChild(splashScreen);
     let singlePlayer = document.querySelector("#single");
     singlePlayer.addEventListener("click", startGame);
-    let exitGame = document.querySelector("#exit");
-    exitGame.onclick = window.close();
+    // let exitGame = document.querySelector("#exit");
+    // exitGame.onclick = window.close();
   }
 
   function removeSplashScreen() {
@@ -38,6 +37,7 @@ function main() {
       <main class="game">
       <span>Score: </span><span id="score">0</span>
       <span>Lives: </span><span id="lives">0</span>
+      <span>Ammo: </span><span id="ammo">0</span>
       <section class="canvas-container">
         <canvas></canvas>
       </section>

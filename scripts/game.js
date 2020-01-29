@@ -73,6 +73,7 @@ Game.prototype.startLoop = function() {
       if (this.keys["ArrowRight"]) this.player.move("right");
       this.printScore();
       this.printLives();
+      this.printAmmo();
       this.updateStatus();
       requestAnimationFrame(loop);
     }
@@ -257,6 +258,6 @@ Game.prototype.printLives = function() {
 
 Game.prototype.printAmmo = function() {
   let ammolement = document.querySelector("span#ammo");
-  if (this.player) livesElement.innerHTML = this.player.ammo;
+  if (this.player) ammolement.innerHTML = this.player.ammo;
 };
 
