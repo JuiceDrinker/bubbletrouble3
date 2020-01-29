@@ -201,6 +201,7 @@ Game.prototype.loadLevel = function(currentLevel) {
   this.clearCanvas();
   let cLevel = this.levels[currentLevel];
   cLevel.bubbles.forEach(function(bubble) {
+    bubble.resetAfterCollision();
     this.bubbles.push(bubble);
   }, this);
   this.timeLeft = cLevel.levelTimer;
