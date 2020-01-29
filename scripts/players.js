@@ -36,9 +36,11 @@ Player.prototype.screenCollision = function(moveString) {
 };
 
 Player.prototype.draw = function() {
+  var img = new Image();
+  img.src = './images/panda.png'
   this.ctx.fillStyle = "#66D3FA";
   // fillRect(x, y, width, height)
-  this.ctx.fillRect(this.x, this.y, this.size, this.size);
+  this.ctx.drawImage(img,this.x, this.y, this.size, this.size);
 };
 
 Player.prototype.removeLife = function(){
