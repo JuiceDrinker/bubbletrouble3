@@ -1,5 +1,11 @@
 "use strict";
 
+var levels = [
+  { levelTimer: 8, bubbles: [] },
+  { levelTimer: 8, bubbles: [] },
+  { levelTimer: 8, bubbles: [] }
+];
+
 function Game() {
   this.canvas = null;
   this.ctx = null;
@@ -18,10 +24,10 @@ function Game() {
   this.img = new Image();
   this.img.src = "./images/1920x1080.png";
   //Levels
-  this.currentLevel = 1;
+  this.currentLevel = 0;
   this.loopTimer = 0;
   //Move this to levels.js perhaps?
-  this.levelTimer = 8;
+  this.levelTimer = 60;
   this.timeLeft;
 }
 
@@ -43,7 +49,6 @@ Game.prototype.start = function() {
   //Load Level
   this.loadLevel();
   console.log("loading");
-  
 
   this.handleShoot = function(event) {
     if (event.keyCode === 32) {
@@ -190,11 +195,11 @@ Game.prototype.loadLevel = function() {
 };
 
 Game.prototype.countLevelTime = function() {
-  if(this.loopTimer % 60 === 0){
+  if (this.loopTimer % 60 === 0) {
     this.loopTimer = 0;
     this.timeLeft--;
   }
-  if(this.timeLeft <= 0) this.levelTimeOut = true;
+  if (this.timeLeft <= 0) this.levelTimeOut = true;
 };
 
 Game.prototype.drawBullet = function() {

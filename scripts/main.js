@@ -23,8 +23,10 @@ function main() {
     document.body.appendChild(splashScreen);
     let singlePlayer = document.querySelector("#single");
     singlePlayer.addEventListener("click", startGame);
-    // let exitGame = document.querySelector("#exit");
-    // exitGame.onclick = window.close();
+    let exitGame = document.querySelector("#exit");
+    exitGame.addEventListener("click", function() {
+      window.close();
+    });
   }
 
   function removeSplashScreen() {
