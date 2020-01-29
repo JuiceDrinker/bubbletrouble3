@@ -1,11 +1,5 @@
 "use strict";
 
-var levels = [
-  { levelTimer: 8, bubbles: [] },
-  { levelTimer: 8, bubbles: [] },
-  { levelTimer: 8, bubbles: [] }
-];
-
 function Game() {
   this.canvas = null;
   this.ctx = null;
@@ -47,7 +41,6 @@ Game.prototype.start = function() {
   //Create new player
   this.player = new Player(this.canvas);
   //Load Level
-  this.loadLevel();
   console.log("loading");
 
   this.handleShoot = function(event) {
@@ -72,8 +65,26 @@ Game.prototype.start = function() {
   );
   // document.body.addEventListener("keydown", this.handleKeyDown.bind(this));
   document.body.addEventListener("keypress", this.handleShoot.bind(this));
+  this.levels = [
+    { levelTimer: 60, bubbles: [new Bubbles(this.canvas, 400, 200, 30)] },
+    {
+      levelTimer: 60,
+      bubbles: [
+        new Bubbles(this.canvas, 300, 400, 40),
+        new Bubbles(this.canvas, 400, 200, 40)
+      ]
+    },
+    {
+      levelTimer: 60,
+      bubbles: [
+        new Bubbles(this.canvas, 300, 400, 50),
+        new Bubbles(this.canvas, 100, 200, 50),
+        new Bubbles(this.canvas, 600, 700, 50)
+      ]
+    }
+  ];
+  this.loadLevel(this.currentLevel);
   //Start game loop
-  //this.loadLevel();
   this.startLoop();
 };
 
@@ -100,10 +111,9 @@ Game.prototype.checkPlayerCollision = function() {
   this.bubbles.forEach(function(bubble, index) {
     if (this.didCollide(this.player, bubble)) {
       this.player.removeLife();
-      this.bubbles.splice(index, 1);
       this.bubbles.length = 0;
       this.player.x = this.containerWidth / 2;
-      this.loadLevel();
+      this.loadLevel(this.currentLevel);
       //TODO : should restart game
       if (this.player.lives <= 0) {
         this.goToGameOver();
@@ -153,7 +163,7 @@ Game.prototype.goToGameOver = function() {
 Game.prototype.removePlayerLife = function() {};
 
 Game.prototype.handleBubblePop = function(bubble, index) {
-  if (bubble.size >= 45) {
+  if (bubble.size >= 35) {
     bubble.size -= 15;
     let newBubble = new Bubbles(this.canvas, bubble.x, bubble.y);
     newBubble.size = bubble.size;
@@ -165,6 +175,7 @@ Game.prototype.handleBubblePop = function(bubble, index) {
     this.bubbles.splice(index, 1);
     this.bullets.splice(0, 1);
     this.player.ammo++;
+    this.loadNextLevel();
   }
 };
 
@@ -184,19 +195,20 @@ Game.prototype.shoot = function() {
   }
 };
 // Backlog
-Game.prototype.loadLevel = function() {
+Game.prototype.loadLevel = function(currentLevel) {
+  //Access correct array element
+  if(this.bubbles.length===0) console.log(this.bubbles);
   this.clearCanvas();
-  let bubble = new Bubbles(this.canvas, 300, 200);
-  this.bubbles.push(bubble);
-  let bubble2 = new Bubbles(this.canvas, 400, 200);
-  this.bubbles.push(bubble2);
-  this.timeLeft = this.levelTimer;
+  let cLevel = this.levels[currentLevel];
+  cLevel.bubbles.forEach(function(bubble) {
+    this.bubbles.push(bubble);
+  }, this);
+  this.timeLeft = cLevel.levelTimer;
   this.levelTimeOut = false;
 };
 
 Game.prototype.countLevelTime = function() {
   if (this.loopTimer % 60 === 0) {
-    this.loopTimer = 0;
     this.timeLeft--;
   }
   if (this.timeLeft <= 0) this.levelTimeOut = true;
@@ -287,3 +299,11 @@ Game.prototype.printTime = function() {
   let timeElement = document.querySelector("span#time");
   timeElement.innerHTML = this.timeLeft;
 };
+
+Game.prototype.loadNextLevel = function() {
+  if (!this.levelTimeOut && this.bubbles.length === 0) {
+    this.currentLevel++;
+    this.loadLevel(this.currentLevel);
+  }
+};
+

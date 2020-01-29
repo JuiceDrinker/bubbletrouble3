@@ -1,10 +1,10 @@
 "use strict";
-function Bubbles(canvas, x, y) {
+function Bubbles(canvas, x, y, size) {
   //Not sure if we need to put canvas here
   this.canvas = canvas;
   this.ctx = this.canvas.getContext("2d");
   //Size/"Lives"
-  this.size = 50;
+  this.size = size;
   this.width = this.size;
   this.heieght = this.size;
   this.vx = 10;
@@ -54,7 +54,7 @@ Bubbles.prototype.move = function() {
 Bubbles.prototype.draw = function() {
   this.ctx.fillStyle = "green";
   var img = new Image();
-  img.src = "./images/ball_volley2.png"
+  img.src = "./images/ball_volley2.png";
   // fillRect(x, y, width, height)
   this.ctx.drawImage(img, this.x, this.y, this.size, this.size);
 };
@@ -69,7 +69,7 @@ Bubbles.prototype.update = function() {
   this.returnBubble();
 };
 
-Bubbles.prototype.movementGate = function() {
-  if (this.vy > this.vymax) this.vy *= 1;
-  if (this.vy < this.vymin) this.vy *= -1;
-};
+// Bubbles.prototype.movementGate = function() {
+//   if (this.vy > this.vymax) this.vy *= 1;
+//   if (this.vy < this.vymin) this.vy *= -1;
+// };
