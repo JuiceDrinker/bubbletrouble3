@@ -35,24 +35,9 @@ Game.prototype.start = function() {
 
   //Create new player
   this.player = new Player(this.canvas);
-  //Draw bubbles
-  //this.bubble = new Bubbles(this.canvas, 300, 400); //This should be loadlevel()
+  //Load Level
   this.loadLevel();
   console.log("loading");
-
-  //Add event listener for right/left keys
-  // this.handleKeyDown = function(event) {
-  //   switch (event.keyCode) {
-  //     case 37:
-  //       this.player.move("left");
-  //       break;
-  //     case 39:
-  //       this.player.move("right");
-  //       break;
-  //     default:
-  //       break;
-  //   }
-  // };
 
   this.handleShoot = function(event) {
     if (event.keyCode === 32) {
@@ -185,6 +170,7 @@ Game.prototype.shoot = function() {
 };
 // Backlog
 Game.prototype.loadLevel = function() {
+  this.clearCanvas();
   let bubble = new Bubbles(this.canvas, 300, 200);
   this.bubbles.push(bubble);
   let bubble2 = new Bubbles(this.canvas, 400, 200);
@@ -268,3 +254,9 @@ Game.prototype.printLives = function() {
   let livesElement = document.querySelector("span#lives");
   if (this.player) livesElement.innerHTML = this.player.lives;
 };
+
+Game.prototype.printAmmo = function() {
+  let ammolement = document.querySelector("span#ammo");
+  if (this.player) livesElement.innerHTML = this.player.ammo;
+};
+
