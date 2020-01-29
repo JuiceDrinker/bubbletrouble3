@@ -1,5 +1,11 @@
 "use strict";
 
+var levels = [
+  { levelTimer: 8, bubbles: [] },
+  { levelTimer: 8, bubbles: [] },
+  { levelTimer: 8, bubbles: [] }
+];
+
 function Game() {
   this.canvas = null;
   this.ctx = null;
@@ -12,12 +18,17 @@ function Game() {
   this.gameRunning = false;
   this.gameScreen = null;
   this.score = 0;
-  this.levelTimeOut = false;
-  // BACLLOG Levels
+  this.levelTimeOut = true;
   this.bullet;
   this.keys = {};
   this.img = new Image();
   this.img.src = "./images/1920x1080.png";
+  //Levels
+  this.currentLevel = 0;
+  this.loopTimer = 0;
+  //Move this to levels.js perhaps?
+  this.levelTimer = 60;
+  this.timeLeft;
 }
 
 Game.prototype.start = function() {
@@ -68,12 +79,16 @@ Game.prototype.start = function() {
 
 Game.prototype.startLoop = function() {
   var loop = function() {
-    if (this.gameRunning) {
+    if (this.gameRunning && !this.levelTimeOut) {
       if (this.keys["ArrowLeft"]) this.player.move("left");
       if (this.keys["ArrowRight"]) this.player.move("right");
       this.printScore();
       this.printLives();
+      this.printAmmo();
+      this.printTime();
       this.updateStatus();
+      this.countLevelTime();
+      this.loopTimer++;
       requestAnimationFrame(loop);
     }
   }.bind(this);
@@ -175,9 +190,17 @@ Game.prototype.loadLevel = function() {
   this.bubbles.push(bubble);
   let bubble2 = new Bubbles(this.canvas, 400, 200);
   this.bubbles.push(bubble2);
+  this.timeLeft = this.levelTimer;
+  this.levelTimeOut = false;
 };
 
-Game.prototype.countLevelTime = function() {};
+Game.prototype.countLevelTime = function() {
+  if (this.loopTimer % 60 === 0) {
+    this.loopTimer = 0;
+    this.timeLeft--;
+  }
+  if (this.timeLeft <= 0) this.levelTimeOut = true;
+};
 
 Game.prototype.drawBullet = function() {
   if (this.bullets.length > 0) {
@@ -252,11 +275,15 @@ Game.prototype.printScore = function() {
 
 Game.prototype.printLives = function() {
   let livesElement = document.querySelector("span#lives");
-  if (this.player) livesElement.innerHTML = this.player.lives;
+  livesElement.innerHTML = this.player.lives;
 };
 
 Game.prototype.printAmmo = function() {
-  let ammolement = document.querySelector("span#ammo");
-  if (this.player) livesElement.innerHTML = this.player.ammo;
+  let ammoElement = document.querySelector("span#ammo");
+  ammoElement.innerHTML = this.player.ammo;
 };
 
+Game.prototype.printTime = function() {
+  let timeElement = document.querySelector("span#time");
+  timeElement.innerHTML = this.timeLeft;
+};

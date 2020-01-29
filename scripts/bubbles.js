@@ -18,8 +18,6 @@ function Bubbles(canvas, x, y) {
   this.y = y;
   // change speed of bubbles with this constant;
   this.t = 0.4;
-  // screenCollision()
-  // movement()
 }
 
 Bubbles.prototype.checkWall = function() {
