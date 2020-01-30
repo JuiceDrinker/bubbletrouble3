@@ -7,17 +7,30 @@ function Bubbles(canvas, x, y, size) {
   this.size = size;
   this.width = this.size;
   this.heieght = this.size;
+  // (x,y)
+  this.x = x;
+  this.y = y;
+  // change speed of bubbles with this constant;
+  this.t = 0.4;
+
+  this.initialize();
+}
+
+Bubbles.prototype.initialize = function() {
+  // not sure if these are the correct properties that need to be resetted, just guessing
+  // moved it into a dedicated function so you don't get duplicate code inside resetAfterCollision()
+  // you could also omit resetAfterCollision() and just call this function from game.js, but I guess it's a little more self-explaining that way
+
   this.vx = 10;
   this.vxmax = 20;
   this.vxmin = 3;
   this.vy = 10;
   this.vymin = 20;
   this.vymax = 50;
-  // (x,y)
-  this.x = x;
-  this.y = y;
-  // change speed of bubbles with this constant;
-  this.t = 0.4;
+}
+
+Bubbles.prototype.resetAfterCollision = function() {
+  this.initialize();
 }
 
 Bubbles.prototype.checkWall = function() {
@@ -69,7 +82,4 @@ Bubbles.prototype.update = function() {
   this.returnBubble();
 };
 
-// Bubbles.prototype.movementGate = function() {
-//   if (this.vy > this.vymax) this.vy *= 1;
-//   if (this.vy < this.vymin) this.vy *= -1;
-// };
+
