@@ -82,7 +82,4 @@ Bubbles.prototype.update = function() {
   this.returnBubble();
 };
 
-// Bubbles.prototype.movementGate = function() {
-//   if (this.vy > this.vymax) this.vy *= 1;
-//   if (this.vy < this.vymin) this.vy *= -1;
-// };
+
