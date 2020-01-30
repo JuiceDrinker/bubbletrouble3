@@ -154,7 +154,6 @@ body {
 }
 
 .canvas-container {
-  border: 1px red solid;
   width: 100%;
   height: 100vh;
 }
@@ -195,6 +194,13 @@ canvas {
   color: white;
 }
 
+#instructions{
+  background: black;
+  color: white;
+  padding: 20px;
+  width: 250px;
+}
+
 #game-over {
   display: flex;
   height: 100%;
@@ -223,4 +229,11 @@ canvas {
   font-size: 48px;
   margin-top: 100px;
   margin-bottom: 60px;
+}
+
+.game{
+  background: black;
+  color: white;
+  text-align: center;
+  font-size: 18px;
 }

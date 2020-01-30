@@ -17,6 +17,8 @@ function main() {
         <button id="single">1 player</button>
         <button id="multiplayer">2 player</button>
         <button id="exit">Exit Game</button>
+        <section id = "instructions"> Move left/right wih arrow keys.
+        Space to shoot</section>
         <h3> &#9400 2020 Adi Subramanian</h3>
     </main>`
     );
