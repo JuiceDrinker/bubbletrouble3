@@ -104,6 +104,7 @@ Game.prototype.startLoop = function() {
       this.printLives();
       this.printAmmo();
       this.printTime();
+      this.printLevel();
       this.updateStatus();
       this.countLevelTime();
       this.loopTimer++;
@@ -207,8 +208,8 @@ Game.prototype.shoot = function() {
 Game.prototype.loadLevel = function(currentLevel) {
   //Access correct array element
   this.clearCanvas();
+  this.levelStartTimer();
   let cLevel = levels.levels[currentLevel];
-  console.log('cLevel :', cLevel);
   cLevel.bubbles.forEach(function(bubble) {
     let x = bubble[0];
     let y = bubble[1];
@@ -309,7 +310,14 @@ Game.prototype.printAmmo = function() {
 
 Game.prototype.printTime = function() {
   let timeElement = document.querySelector("span#time");
+  console.log('this.timeLeft :', this.timeLeft);
   timeElement.innerHTML = this.timeLeft;
+};
+
+Game.prototype.printLevel = function() {
+  let levelsElement = document.querySelector("span#level");
+  var onLevel = this.currentLevel + 1
+  levelsElement.innerHTML = onLevel;
 };
 
 Game.prototype.loadNextLevel = function() {
@@ -318,3 +326,10 @@ Game.prototype.loadNextLevel = function() {
     this.loadLevel(this.currentLevel);
   }
 };
+
+Game.prototype.levelStartTimer = function(){
+  this.ctx.font = "30px Arial";
+  this.ctx.fillText("Ready?", this.containerWidth/2, this.containerHeight/2)
+  // debugger;
+  // setTimeout()
+}
