@@ -88,14 +88,14 @@ Game.prototype.startLoop = function() {
       this.countLevelTime();
       this.loopTimer++;
       await new Promise(r => setTimeout(r, 1));
-      console.log('this.collision', this.collision);
-      if (!this.collision) requestAnimationFrame(loop)
-      else{
-        this.startCounter()
+      console.log("this.collision", this.collision);
+      if (!this.collision) requestAnimationFrame(loop);
+      else {
+        this.startCounter();
       }
     }
   }.bind(this);
-  
+
   requestAnimationFrame(loop);
 };
 
@@ -196,6 +196,7 @@ Game.prototype.shoot = function() {
 // Backlog
 Game.prototype.loadLevel = function(currentLevel) {
   //Access correct array element
+  this.player.x = this.containerWidth / 2;
   this.clearCanvas();
   let cLevel = levels.levels[currentLevel];
   cLevel.bubbles.forEach(function(bubble) {
@@ -316,13 +317,13 @@ Game.prototype.loadNextLevel = function() {
 
 Game.prototype.startCounter = function() {
   // this.levelStartIntervalID = setInterval(
-    // function() {
-      console.log('coucou');
-      this.counter--;
-      this.levelStartTimer()
-    // }
-    // .bind(this),
-    // 1000
+  // function() {
+  console.log("coucou");
+  this.counter--;
+  this.levelStartTimer();
+  // }
+  // .bind(this),
+  // 1000
   // );
 };
 
@@ -332,28 +333,33 @@ Game.prototype.levelStartTimer = function() {
   // levelStartIntervalID = setInterval(
   // function() {
   this.ctx.fillStyle = "white";
-  this.ctx.fillRect(0,0, this.containerWidth, this.containerHeight);
+  this.ctx.fillRect(0, 0, this.containerWidth, this.containerHeight);
   this.ctx.font = "30px Arial";
   this.ctx.fillStyle = "#ff00ff";
-  this.ctx.fillText(this.counter, this.containerWidth / 2, this.containerHeight / 2);
+  this.ctx.fillText(
+    this.counter,
+    this.containerWidth / 2,
+    this.containerHeight / 2
+  );
   // counter--;
   console.log(this.counter);
-  
+
   if (this.counter === 0) {
-    console.log('start again');
+    console.log("start again");
     // clearInterval(this.levelStartIntervalID);
     this.startLoop();
     this.collision = false;
     this.counter = 4;
   } else {
-    setTimeout(function(){
-      console.log('holaaaaa');
-      this.startCounter()
-      // this.levelStartTimer()
-    }.bind(this)
-    , 1000)
+    setTimeout(
+      function() {
+        console.log("holaaaaa");
+        this.startCounter();
+        // this.levelStartTimer()
+      }.bind(this),
+      1000
+    );
     // this.startCounter();
-
   }
   // }.bind(this),
   // 1000
