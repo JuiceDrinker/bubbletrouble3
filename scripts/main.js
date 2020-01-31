@@ -58,13 +58,16 @@ function main() {
   }
 
   //Endgame
-  function buildEndgameScreen() {
+  function buildEndgameScreen(score) {
     // ADD THIS TO THE DOM <h2>Your Score : ${score} </h2>
     gameOverScreen = buildDom(
       `<main id ="game-over">
       <h1>Game Over</h1> 
+      <h3>Score: <span></span></h3>
       <button id ="restart-game">Try again</button></main>`
     );
+    var scoreElement = gameOverScreen.querySelector('span')
+    scoreElement.innerText = score;
     document.body.appendChild(gameOverScreen);
   }
   function removeEndgameScreen() {
@@ -81,13 +84,13 @@ function main() {
     game.gameScreen = buildGameScreen();
     game.start();
     game.passGameOverCallback(function() {
-      endGame();
+      endGame(game.score);
     });
   }
 
-  function endGame() {
+  function endGame(score) {
     removeGameScreen();
-    buildEndgameScreen();
+    buildEndgameScreen(score);
     let restartGameButton = document.querySelector("#restart-game");
     restartGameButton.addEventListener("click", startGame);
   }

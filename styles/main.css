@@ -211,6 +211,10 @@ canvas {
   align-items: center;
 }
 
+#game-over h3{
+  margin-bottom: 20px;
+}
+
 #restart-game {
   display: inline-block;
   background-color: red;

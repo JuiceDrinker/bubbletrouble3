@@ -334,8 +334,10 @@ Game.prototype.levelStartTimer = function() {
   // function() {
   this.ctx.fillStyle = "white";
   this.ctx.fillRect(0, 0, this.containerWidth, this.containerHeight);
-  this.ctx.font = "30px Arial";
+  this.ctx.font = "250px Arial";
   this.ctx.fillStyle = "#ff00ff";
+  this.ctx.textBaseline = 'middle';
+  this.ctx.textAlign = "center";
   this.ctx.fillText(
     this.counter,
     this.containerWidth / 2,
