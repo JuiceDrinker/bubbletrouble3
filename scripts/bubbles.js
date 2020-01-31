@@ -6,7 +6,7 @@ function Bubbles(canvas, x, y, size) {
   //Size/"Lives"
   this.size = size;
   this.width = this.size;
-  this.heieght = this.size;
+  this.height = this.size;
   // (x,y)
   this.x = x;
   this.y = y;
