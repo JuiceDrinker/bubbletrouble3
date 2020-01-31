@@ -1,9 +1,9 @@
 "use strict";
 var levelStartIntervalID;
 var levels;
-var counter = 3;
 function Game() {
   this.canvas = null;
+  this.counter = 4;
   this.ctx = null;
   //Bubbels
   this.bubbles = [];
@@ -25,6 +25,7 @@ function Game() {
   //Move this to levels.js perhaps?
   this.levelTimer = 60;
   this.timeLeft;
+  this.collision = false;
 }
 
 // var levels = new Levels(currentLevel);
@@ -67,9 +68,10 @@ Game.prototype.start = function() {
   );
   document.body.addEventListener("keypress", this.handleShoot.bind(this));
   this.loadLevel(this.currentLevel);
-  levelStartIntervalID = setInterval(this.levelStartTimer.bind(this), 3000);
+  // levelStartIntervalID = setInterval(this.levelStartTimer.bind(this), 1000);
+  this.startCounter();
   //Start game loop
-  this.startLoop();
+  // setTimeout(this.startLoop(), 3000)
 };
 
 Game.prototype.startLoop = function() {
@@ -86,11 +88,14 @@ Game.prototype.startLoop = function() {
       this.countLevelTime();
       this.loopTimer++;
       await new Promise(r => setTimeout(r, 1));
-
-      requestAnimationFrame(loop);
+      console.log('this.collision', this.collision);
+      if (!this.collision) requestAnimationFrame(loop)
+      else{
+        this.startCounter()
+      }
     }
   }.bind(this);
-
+  
   requestAnimationFrame(loop);
 };
 
@@ -98,13 +103,20 @@ Game.prototype.checkPlayerCollision = function() {
   this.bubbles.forEach(function(bubble, index) {
     if (this.didCollide(this.player, bubble)) {
       this.player.removeLife();
+      this.collision = true;
+
+      if (this.player.lives <= 0) {
+        this.goToGameOver();
+      } else {
+        console.log("hola");
+        this.collision = true;
+        // levelStartIntervalID = setInterval(this.levelStartTimer.bind(this), 1000);
+        // this.startCounter();
+      }
       this.bubbles.length = 0;
       this.player.x = this.containerWidth / 2;
       this.loadLevel(this.currentLevel);
       //Restart game if no lives
-      if (this.player.lives <= 0) {
-        this.goToGameOver();
-      }
     }
   }, this);
 };
@@ -302,14 +314,48 @@ Game.prototype.loadNextLevel = function() {
   }
 };
 
+Game.prototype.startCounter = function() {
+  // this.levelStartIntervalID = setInterval(
+    // function() {
+      console.log('coucou');
+      this.counter--;
+      this.levelStartTimer()
+    // }
+    // .bind(this),
+    // 1000
+  // );
+};
+
 Game.prototype.levelStartTimer = function() {
+  // this.ctx.fillStyle = "white";
+  // this.ctx.fillRect(0, 0, this.containerWidth, this.containerHeight);
+  // levelStartIntervalID = setInterval(
+  // function() {
+  this.ctx.fillStyle = "white";
+  this.ctx.fillRect(0,0, this.containerWidth, this.containerHeight);
   this.ctx.font = "30px Arial";
-  this.ctx.fillStyle = "#ff00ff"
-  this.ctx.fillText(counter, this.containerWidth / 2, this.containerHeight / 2);
-  counter--;
-  console.log(counter);
-  if (counter === 0) {
-    counter = 3;
-    clearInterval(levelStartIntervalID);
+  this.ctx.fillStyle = "#ff00ff";
+  this.ctx.fillText(this.counter, this.containerWidth / 2, this.containerHeight / 2);
+  // counter--;
+  console.log(this.counter);
+  
+  if (this.counter === 0) {
+    console.log('start again');
+    // clearInterval(this.levelStartIntervalID);
+    this.startLoop();
+    this.collision = false;
+    this.counter = 4;
+  } else {
+    setTimeout(function(){
+      console.log('holaaaaa');
+      this.startCounter()
+      // this.levelStartTimer()
+    }.bind(this)
+    , 1000)
+    // this.startCounter();
+
   }
+  // }.bind(this),
+  // 1000
+  // );
 };
